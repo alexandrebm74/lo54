@@ -56,7 +56,7 @@ public class FormationDao {
      */
     public static List<Formation> chargerToutesLesFormations(Session session) {
 
-        String s = new String("from formation");
+        String s = new String("from Formation");
         Query query = session.createQuery(s);
         return query.list();
     }
