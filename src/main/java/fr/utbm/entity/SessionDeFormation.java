@@ -1,25 +1,44 @@
 package fr.utbm.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name="session")
 public class SessionDeFormation implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
+
+    @Column(name="debut")
     private Date debut;
+
+    @Column(name="fin")
     private Date fin;
+
+    @Column(name="capacite")
     private int capacite;
+
+    @ManyToOne
+    @JoinColumn(name="formation_code")
+    private Formation cours;
+
+    @OneToOne
+    @JoinColumn(name="lieu_id")
     private Lieu emplacement;
 
     public SessionDeFormation() {
     }
 
-    public SessionDeFormation(int id, Date debut, Date fin, int capacite, Lieu emplacement) {
+    public SessionDeFormation(int id, Date debut, Date fin, int capacite, Formation cours, Lieu emplacement) {
         this.id = id;
         this.debut = debut;
         this.fin = fin;
         this.capacite = capacite;
+        this.cours = cours;
         this.emplacement = emplacement;
     }
 
@@ -55,6 +74,14 @@ public class SessionDeFormation implements Serializable {
         this.capacite = capacite;
     }
 
+    public Formation getCours() {
+        return cours;
+    }
+
+    public void setCours(Formation cours) {
+        this.cours = cours;
+    }
+
     public Lieu getEmplacement() {
         return emplacement;
     }
@@ -72,13 +99,14 @@ public class SessionDeFormation implements Serializable {
                 getCapacite() == that.getCapacite() &&
                 Objects.equals(getDebut(), that.getDebut()) &&
                 Objects.equals(getFin(), that.getFin()) &&
+                Objects.equals(getCours(), that.getCours()) &&
                 Objects.equals(getEmplacement(), that.getEmplacement());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getDebut(), getFin(), getCapacite(), getEmplacement());
+        return Objects.hash(getId(), getDebut(), getFin(), getCapacite(), getCours(), getEmplacement());
     }
 
     @Override
@@ -88,6 +116,7 @@ public class SessionDeFormation implements Serializable {
                 ", debut : " + debut +
                 ", fin : " + fin +
                 ", capacite : " + capacite +
+                ", cours : " + cours +
                 ", emplacement : " + emplacement +
                 '}';
     }

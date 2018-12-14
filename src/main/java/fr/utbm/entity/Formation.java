@@ -1,14 +1,25 @@
 package fr.utbm.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table (name="formation")
 public class Formation implements Serializable {
 
+    @Id
+    @Column(name="code", columnDefinition="char")
     private String code;
+
+    @Column(name="intitule")
     private String intitule;
-    private ArrayList<SessionDeFormation> listeSessions;
+
+    @OneToMany (fetch=FetchType.EAGER)
+    @JoinColumn(name="formation_code")
+    private List<SessionDeFormation> listeSessions;
 
     public Formation() {
     }
@@ -16,7 +27,6 @@ public class Formation implements Serializable {
     public Formation(String code, String title) {
         this.code = code;
         this.intitule = title;
-        listeSessions = new ArrayList<>();
     }
 
     public String getCode() {
@@ -34,13 +44,13 @@ public class Formation implements Serializable {
     public void setIntitule(String title) {
         this.intitule = title;
     }
-    
-    public void addSession(SessionDeFormation session) {
-        listeSessions.add(session);
+
+    public List<SessionDeFormation> getListeSessions() {
+        return listeSessions;
     }
 
-    public ArrayList<SessionDeFormation> getListeSessions() {
-        return listeSessions;
+    public void setListeSessions(List<SessionDeFormation> listeSessions) {
+        this.listeSessions = listeSessions;
     }
 
     @Override

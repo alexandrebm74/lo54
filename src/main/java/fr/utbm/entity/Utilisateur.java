@@ -1,4 +1,4 @@
-package fr.utbm.lo54.projet.server.entity;
+package fr.utbm.entity;
 
 public class Utilisateur {
 
