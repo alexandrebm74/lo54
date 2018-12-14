@@ -18,6 +18,7 @@
         <mapping class="fr.utbm.entity.Lieu"/>
         <mapping class="fr.utbm.entity.Formation"/>
         <mapping class="fr.utbm.entity.SessionDeFormation"/>
+        <mapping class="fr.utbm.entity.Utilisateur"/>
 
     </session-factory>
 </hibernate-configuration>

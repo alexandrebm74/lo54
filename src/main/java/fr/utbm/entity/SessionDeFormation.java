@@ -26,7 +26,7 @@ public class SessionDeFormation implements Serializable {
     @JoinColumn(name="formation_code")
     private Formation cours;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="lieu_id")
     private Lieu emplacement;
 
