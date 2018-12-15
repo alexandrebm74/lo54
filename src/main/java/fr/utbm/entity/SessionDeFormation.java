@@ -3,6 +3,7 @@ package fr.utbm.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +30,10 @@ public class SessionDeFormation implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="lieu_id")
     private Lieu emplacement;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="session_id")
+    private List<Utilisateur> inscrits;
 
     public SessionDeFormation() {
     }
@@ -96,6 +101,14 @@ public class SessionDeFormation implements Serializable {
 
     public void setEmplacement(Lieu emplacement) {
         this.emplacement = emplacement;
+    }
+
+    public List<Utilisateur> getInscrits() {
+        return inscrits;
+    }
+
+    public void setInscrits(List<Utilisateur> inscrits) {
+        this.inscrits = inscrits;
     }
 
     @Override
