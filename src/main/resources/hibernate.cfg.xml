@@ -14,7 +14,6 @@
         <property name="hbm2ddl.auto">validate</property>
         <property name="connection.pool_size">10</property>
 
-        <!--mapping resource="fr/utbm/lo54/projet/server/entity/Lieu.hbm.xml"/-->
         <mapping class="fr.utbm.entity.Lieu"/>
         <mapping class="fr.utbm.entity.Formation"/>
         <mapping class="fr.utbm.entity.SessionDeFormation"/>

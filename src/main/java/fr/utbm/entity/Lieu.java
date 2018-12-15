@@ -18,6 +18,10 @@ public class Lieu implements Serializable {
     public Lieu() {
     }
 
+    public Lieu(String ville) {
+        this.ville = ville;
+    }
+
     public Lieu(int id, String ville) {
         this.id = id;
         this.ville = ville;

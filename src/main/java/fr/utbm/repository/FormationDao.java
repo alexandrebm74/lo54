@@ -1,6 +1,7 @@
 package fr.utbm.repository;
 
 import fr.utbm.entity.Formation;
+import fr.utbm.entity.Lieu;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -34,6 +35,18 @@ public class FormationDao {
 
         session.beginTransaction();
         session.merge(formation);
+        session.getTransaction().commit();
+    }
+
+    /**
+     * Efface l'enregistrement en base de l'objet formation passé en paramètre.
+     * @param formation : formation à effacer
+     * @param session : session hibernate courante
+     */
+    public static void delete(Formation formation, Session session) {
+
+        session.beginTransaction();
+        session.delete(formation);
         session.getTransaction().commit();
     }
 

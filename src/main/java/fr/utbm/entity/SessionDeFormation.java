@@ -22,15 +22,23 @@ public class SessionDeFormation implements Serializable {
     @Column(name="capacite")
     private int capacite;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="formation_code")
     private Formation cours;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="lieu_id")
     private Lieu emplacement;
 
     public SessionDeFormation() {
+    }
+
+    public SessionDeFormation(Date debut, Date fin, int capacite, Formation cours, Lieu emplacement) {
+        this.debut = debut;
+        this.fin = fin;
+        this.capacite = capacite;
+        this.cours = cours;
+        this.emplacement = emplacement;
     }
 
     public SessionDeFormation(int id, Date debut, Date fin, int capacite, Formation cours, Lieu emplacement) {
