@@ -1,7 +1,6 @@
 package fr.utbm.repository;
 
 import fr.utbm.entity.Formation;
-import fr.utbm.entity.Lieu;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -11,18 +10,23 @@ public class FormationDao {
 
     /**
      * Permet d'ajouter une nouvelle formation en base de données
-     * @param nouvelleFormation : la formation à ajouter
+     * @param formation : la formation à ajouter
      * @param session : le session courante Hibernate
      * @throws Exception
      */
-    public static void ajouter(Formation nouvelleFormation, Session session) throws Exception {
+    public static void ajouter(Formation formation, Session session) throws Exception {
 
-        if(nouvelleFormation.getCode().length() > 4) {
-            throw new Exception("Le code de la formation doit comporter au maximum 4 characters");
+        if(formation == null) {
+            throw new Exception("Erreur : formation inexistante, " +
+                    "l'élement ne peut pas être ajouté en base de données");
+        }
+
+        if(chargerLesCodesDeFormation(session).contains(formation.getCode())) {
+            throw new Exception("Erreur : ce code de formation est déjà présent en base de données");
         }
 
         session.beginTransaction();
-        session.persist(nouvelleFormation);
+        session.persist(formation);
         session.getTransaction().commit();
     }
 
@@ -31,7 +35,16 @@ public class FormationDao {
      * @param formation : l'objet formation à jour
      * @param session : session courante hibernate
      */
-    public static void sauvegarder(Formation formation, Session session) {
+    public static void sauvegarder(Formation formation, Session session) throws Exception {
+
+        if(formation == null) {
+            throw new Exception("Erreur : formation inexistante, " +
+                    "l'élement ne peut pas être sauvegardé en base de données");
+        }
+
+        if(!chargerLesCodesDeFormation(session).contains(formation.getCode())) {
+            throw new Exception("Erreur : code inconnu en base de données");
+        }
 
         session.beginTransaction();
         session.merge(formation);
@@ -43,7 +56,16 @@ public class FormationDao {
      * @param formation : formation à effacer
      * @param session : session hibernate courante
      */
-    public static void delete(Formation formation, Session session) {
+    public static void delete(Formation formation, Session session) throws Exception {
+
+        if(formation == null) {
+            throw new Exception("Erreur : formation inexistante, " +
+                    "l'élement ne peut pas être supprimé de la base de données");
+        }
+
+        if(!chargerLesCodesDeFormation(session).contains(formation.getCode())) {
+            throw new Exception("Erreur : code inconnu en base de données");
+        }
 
         session.beginTransaction();
         session.delete(formation);
@@ -70,6 +92,17 @@ public class FormationDao {
     public static List<Formation> chargerToutesLesFormations(Session session) {
 
         String s = new String("from Formation");
+        Query query = session.createQuery(s);
+        return query.list();
+    }
+
+    /**
+     * Permet de récupérer sous forme de liste l'ensemble des codes de formations présent en base.
+     * @param session : session courante Hibernate
+     * @return la liste exhaustive des codes des formations présentes en base de données
+     */
+    public static List<String> chargerLesCodesDeFormation(Session session) {
+        String s = new String("SELECT F.code FROM Formation F");
         Query query = session.createQuery(s);
         return query.list();
     }
