@@ -12,7 +12,16 @@ public class LieuDao {
      * @param lieu : objet à enregistrer
      * @param session : session courante hibernate
      */
-    public static void ajouter(Lieu lieu, Session session) {
+    public static void ajouter(Lieu lieu, Session session) throws Exception {
+
+        if(lieu == null) {
+            throw new Exception("Erreur : lieu inexistant, " +
+                    "l'élement ne peut pas être ajouté en base de données");
+        }
+
+        if(lieu.getId() > 0){
+            throw new Exception("Erreur : l'identifiant du lieu est déjà présent en base de données");
+        }
 
         session.beginTransaction();
         session.persist(lieu);
@@ -24,7 +33,16 @@ public class LieuDao {
      * @param lieu : objet lieu à jour
      * @param session : session hibernate courante
      */
-    public static void sauvegarder(Lieu lieu, Session session) {
+    public static void sauvegarder(Lieu lieu, Session session) throws Exception {
+
+        if(lieu == null) {
+            throw new Exception("Erreur : lieu inexistant, " +
+                    "l'élement ne peut pas être sauvegardé en base de données");
+        }
+
+        if(lieu.getId() == 0){
+            throw new Exception("Erreur : Id inconnu en base de données");
+        }
 
         session.beginTransaction();
         session.merge(lieu);
@@ -36,7 +54,16 @@ public class LieuDao {
      * @param lieu : lieu à effacer
      * @param session : session hibernate courante
      */
-    public static void delete(Lieu lieu, Session session) {
+    public static void delete(Lieu lieu, Session session) throws Exception {
+
+        if(lieu == null) {
+            throw new Exception("Erreur : lieu inexistant, " +
+                    "l'élement ne peut pas être supprimé de la base de données");
+        }
+
+        if(lieu.getId() == 0){
+            throw new Exception("Erreur : Id inconnu en base de données");
+        }
 
         session.beginTransaction();
         session.delete(lieu);
