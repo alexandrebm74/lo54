@@ -13,7 +13,19 @@ public class UtilisateurDao {
      * @param utilisateur : l'utilisateur à ajouter
      * @param session : la session courante Hibernate
      */
-    public static void ajouter(Utilisateur utilisateur, Session session) {
+    public static void ajouter(Utilisateur utilisateur, Session session) throws Exception {
+
+        if(utilisateur == null
+                || utilisateur.getSession() == null
+                || utilisateur.getSession().getCours() == null
+                || utilisateur.getSession().getEmplacement() == null) {
+            throw new Exception("Erreur : utilisateur incomplet, " +
+                    "l'élement ne peut pas être ajouté en base de données");
+        }
+
+        if(utilisateur.getId() > 0) {
+            throw new Exception("Erreur : l'identifiant de l'utilisateur est déjà présent en base de données");
+        }
 
         session.beginTransaction();
         session.persist(utilisateur);
@@ -25,7 +37,19 @@ public class UtilisateurDao {
      * @param utilisateur : l'objet java Utilisateur à jour
      * @param session : session courante hibernate
      */
-    public static void sauvegarder(Utilisateur utilisateur, Session session) {
+    public static void sauvegarder(Utilisateur utilisateur, Session session) throws Exception {
+
+        if(utilisateur == null
+                || utilisateur.getSession() == null
+                || utilisateur.getSession().getCours() == null
+                || utilisateur.getSession().getEmplacement() == null) {
+            throw new Exception("Erreur : utilisateur incomplet, " +
+                    "l'élement ne peut pas être sauvegardé en base de données");
+        }
+
+        if(utilisateur.getId() == 0) {
+            throw new Exception("Erreur : Id inconnu en base de données");
+        }
 
         session.beginTransaction();
         session.merge(utilisateur);
@@ -37,7 +61,16 @@ public class UtilisateurDao {
      * @param utilisateur : Utilisateur à effacer
      * @param session : session hibernate courante
      */
-    public static void delete(Utilisateur utilisateur, Session session) {
+    public static void delete(Utilisateur utilisateur, Session session) throws Exception {
+
+        if(utilisateur == null) {
+            throw new Exception("Erreur : utilisateur incomplet, " +
+                    "l'élement ne peut pas être supprimé de la base de données");
+        }
+
+        if(utilisateur.getId() == 0) {
+            throw new Exception("Erreur : Id inconnu en base de données");
+        }
 
         session.beginTransaction();
         session.delete(utilisateur);
