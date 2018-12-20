@@ -57,7 +57,9 @@
                 <c:forEach var="unLieu" items="${listeLieus}">
                     <option value="${unLieu.ville}">
                 </c:forEach>
-            </datalist>
+            </datalist><br>
+            Session disponible après : <input type="date" id="debutmin" name="debutmin" /><br>
+            Session disponible avant : <input type="date" id="finmax" name="finmax" />
             <br><br><br>
             <input type="submit">
         </form>

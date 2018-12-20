@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fr.utbm.entity.*;
+import fr.utbm.repository.LogRedisDao;
 import fr.utbm.repository.SessionDeFormationDao;
 import fr.utbm.repository.UtilisateurDao;
 import fr.utbm.tools.HibernateUtil;
@@ -42,10 +43,15 @@ public class NouvelUtilisateur extends HttpServlet {
         Session session = HibernateUtil.getSessionFactory().openSession();
         
         SessionDeFormation sessionDeFormation = SessionDeFormationDao.chargerSession(Integer.parseInt(request.getParameter("session_id")), session);
+        if (sessionDeFormation.getNbInscrits() >= sessionDeFormation.getCapacite())
+            throw new Exception("Plus de place disponible dans cette session");
+        
+        System.out.println("\n\n\nAS was here !");
         Utilisateur utilisateur = new Utilisateur(request.getParameter("nom"),request.getParameter("prenom"),request.getParameter("addresse"),
                 request.getParameter("telephone"),request.getParameter("email"),sessionDeFormation);
         
         UtilisateurDao.ajouter(utilisateur, session);
+        LogRedisDao.tracerInscription(utilisateur);
         
         this.getServletContext().getRequestDispatcher( "/WEB-INF/jsp/nouvelutilisateur.jsp" ).forward( request, response );
     }

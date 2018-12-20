@@ -40,6 +40,11 @@
         </style>
     </head>
     <body>
+        <form action="/formations" method="get">
+            <input type="submit" value="Accueil" 
+                   name="Submit" id="formations_button" />
+        </form>
+        <br><br><br>
         <h1>Liste des sessions disponibles</h1>
         <table>
             <tr>
@@ -51,10 +56,10 @@
             <c:forEach var="session" items="${listesessions}">
                 <tr>
                     <td>
-                        <c:out value="${session.debut}"/>
+                        <c:out value="${session.debut.toString().substring(0,10)}"/>
                     </td>
                     <td>
-                        <c:out value="${session.fin}"/>
+                        <c:out value="${session.fin.toString().substring(0,10)}"/>
                     </td>
                     <td style="text-align: center;
                                 line-height: 30px;

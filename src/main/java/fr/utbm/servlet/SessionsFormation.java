@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fr.utbm.entity.*;
 import fr.utbm.repository.FormationDao;
+import fr.utbm.repository.SessionDeFormationDao;
 import fr.utbm.repository.UtilisateurDao;
 import fr.utbm.tools.HibernateUtil;
 import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.annotation.WebServlet;
 
 /**
@@ -36,6 +38,7 @@ public class SessionsFormation extends HttpServlet {
         Session session = HibernateUtil.getSessionFactory().openSession();
         
         Formation formation = FormationDao.chargerFormation(request.getParameter("formation_code"), session);
+        //SessionDeFormation sessionFormation = SessionDeFormationDao.chargerToutesLesFormations(session).stream().filter(f -> f.getCours().getCode().equals(request.getParameter("formation_code"))).collect(Collectors.toList());
         request.setAttribute("listesessions", formation.getListeSessions());
         
         System.out.println(formation.getListeSessions().toString());

@@ -8,6 +8,11 @@
         <title>Inscription</title>
     </head>
     <body>
+        <form action="/formations" method="get">
+            <input type="submit" value="Accueil" 
+                   name="Submit" id="formations_button" />
+        </form>
+        <br><br><br>
         <h1>Inscription à la formation</h1>
         
         <form action="/nouvelutilisateur" method="post">

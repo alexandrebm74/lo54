@@ -16,11 +16,16 @@ import fr.utbm.entity.*;
 import fr.utbm.repository.FormationDao;
 import fr.utbm.repository.LieuDao;
 import fr.utbm.tools.HibernateUtil;
+import java.text.ParseException;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
+import java.text.SimpleDateFormat;  
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +36,7 @@ public class Formations extends HttpServlet {
 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -68,6 +73,51 @@ public class Formations extends HttpServlet {
             listeFormations = listeFormationsTriee;
         }
         
+        System.out.println("\n\n\n\nCOUCOU\n\n\n\n");
+        System.out.println(request.getParameter("debutmin"));
+        System.out.println(request.getParameter("finmax"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        if (request.getParameter("debutmin")!=null && !request.getParameter("debutmin").equals(""))
+        {
+            String debutminString = request.getParameter("debutmin");
+            Date debutmin = dateFormat.parse(debutminString);
+            List<Formation> listeFormationsTriee = new ArrayList<>();
+            for (Formation formation : listeFormations)
+            {
+                boolean conserver = false;
+                for (SessionDeFormation sessionDeFormation : formation.getListeSessions())
+                {
+                    if (sessionDeFormation.getDebut().after(debutmin))
+                        conserver = true;
+                }
+                
+                if (conserver)
+                    listeFormationsTriee.add(formation);
+            }
+            listeFormations = listeFormationsTriee;
+        }
+        
+        if (request.getParameter("finmax")!=null && !request.getParameter("finmax").equals(""))
+        {
+            String finmaxString = request.getParameter("debutmin");
+            Date finmax = dateFormat.parse(finmaxString);
+            List<Formation> listeFormationsTriee = new ArrayList<>();
+            for (Formation formation : listeFormations)
+            {
+                boolean conserver = false;
+                for (SessionDeFormation sessionDeFormation : formation.getListeSessions())
+                {
+                    if (sessionDeFormation.getFin().before(finmax))
+                        conserver = true;
+                }
+                
+                if (conserver)
+                    listeFormationsTriee.add(formation);
+            }
+            listeFormations = listeFormationsTriee;
+        }
+        
         System.out.println(listeFormations.toString());
         
         request.setAttribute("listeFormations", listeFormations);
@@ -82,14 +132,22 @@ public class Formations extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Formations.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Formations.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     
