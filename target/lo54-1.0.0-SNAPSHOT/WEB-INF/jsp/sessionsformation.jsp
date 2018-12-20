@@ -21,6 +21,22 @@
             tr:nth-child(even) {
               background-color: #dddddd;
             }
+            
+            #barre {
+                width: 100%;
+                background-color: #00ff00;
+                text-align: center;
+                color: black;
+                display: inlineblock;
+                line-height: 30px;
+                color: white;
+            }
+                
+            #remplissage {
+                height: 30px;
+                background-color: #ff0000;
+                display: inline;
+            }
         </style>
     </head>
     <body>
@@ -29,27 +45,41 @@
             <tr>
                 <th>Début</th>
                 <th>Fin</th>
-                <th>Capacité</th>
-                <th>Emplacement</th>
+                <th>Remplissage</th>
+                <th>Lieu</th>
             </tr>
-            <tr>
-                <td>
-                    <c:out value="${formation.debut}"/>
-                </td>
-                <td>
-                    <c:out value="${formation.fin}"/>
-                </td>
-                <td>
-                    <c:out value="${formation.capacite}"/>
-                </td>
-                <td>
-                    <c:out value="${formation.emplacement}"/>
-                </td>
-            </tr>
+            <c:forEach var="session" items="${listesessions}">
+                <tr>
+                    <td>
+                        <c:out value="${session.debut}"/>
+                    </td>
+                    <td>
+                        <c:out value="${session.fin}"/>
+                    </td>
+                    <td style="text-align: center;
+                                line-height: 30px;
+                                color: black;">
+                        ${session.nbInscrits}/${session.capacite} inscrits
+                        <div id="barre">
+                            <div id="remplissage" style="width: ${session.tauxRemplissage}%"></div>
+                            ${session.tauxRemplissage} %
+                            </div>
+                    </td>
+                    <td>
+                        <c:out value="${session.emplacement.ville}"/>
+                    </td>
+                    <td>
+                        <form action="/inscription" method="post">
+                            <input type="submit" value="S'inscrire"
+                                   name="Submit" id="sessions_button" />
+                            <input type="hidden" value="${session.cours}"
+                                   name="formation_code" id="formation_code" />
+                            <input type="hidden" value="${session.id}"
+                                   name="session_id" id="session_id" />
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
         </table>
-        <form action="/inscription" method="post">
-            <input type="submit" value="Sessions disponibles"
-                   name="Submit" id="sessions_button" />
-        </form>
     </body>
 </html>

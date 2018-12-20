@@ -13,8 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fr.utbm.entity.*;
+import fr.utbm.repository.FormationDao;
+import fr.utbm.repository.UtilisateurDao;
+import fr.utbm.tools.HibernateUtil;
+import org.hibernate.Session;
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 
 /**
@@ -28,6 +32,14 @@ public class SessionsFormation extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        Formation formation = FormationDao.chargerFormation(request.getParameter("formation_code"), session);
+        request.setAttribute("listesessions", formation.getListeSessions());
+        
+        System.out.println(formation.getListeSessions().toString());
+        
         
         this.getServletContext().getRequestDispatcher( "/WEB-INF/jsp/sessionsformation.jsp" ).forward( request, response );
     }

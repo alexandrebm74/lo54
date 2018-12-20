@@ -10,9 +10,16 @@
     <body>
         <h1>Inscription à la formation</h1>
         
-        <form action="/inscription" method="post">
-            <input type="submit" value="Sessions disponibles"
-                   name="Submit" id="sessions_button" />
+        <form action="/nouvelutilisateur" method="post">
+            Nom: <input type="text" name="nom"><br>
+            Prénom: <input type="text" name="prenom"><br>
+            Addresse: <textarea rows="4" cols="50" name="addresse"></textarea><br>
+            Téléphone: <input type="text" name="telephone"><br>
+            Email: <input type="text" name="email"><br>
+            <input type="hidden" value="${session_id}"
+                                   name="session_id" id="session_id" />
+            <input type="submit" value="Valider inscription"
+                   name="bouton_validation" id="bouton_validation" />
         </form>
     </body>
 </html>

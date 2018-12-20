@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import fr.utbm.entity.*;
 import java.util.Date;
-import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 
 /**
@@ -28,6 +27,9 @@ public class Inscription extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        request.setAttribute("formation_code", request.getParameter("formation_code"));
+        request.setAttribute("session_id", request.getParameter("session_id"));
         
         this.getServletContext().getRequestDispatcher( "/WEB-INF/jsp/inscription.jsp" ).forward( request, response );
     }

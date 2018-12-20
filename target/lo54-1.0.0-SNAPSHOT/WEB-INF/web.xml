@@ -16,6 +16,10 @@
         <servlet-name>Inscription</servlet-name>
         <servlet-class>fr.utbm.servlet.Inscription</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NouvelUtilisateur</servlet-name>
+        <servlet-class>fr.utbm.servlet.NouvelUtilisateur</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>servlet</servlet-name>
         <url-pattern>/servlet/*</url-pattern>
@@ -30,7 +34,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Inscription</servlet-name>
-        <url-pattern>/Inscription</url-pattern>
+        <url-pattern>/inscription</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NouvelUtilisateur</servlet-name>
+        <url-pattern>/nouvelutilisateur</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
